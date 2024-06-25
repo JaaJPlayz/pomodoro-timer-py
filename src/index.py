@@ -1,4 +1,5 @@
 from time import sleep
+import os
 
 
 def pomodoro_timer(work_time, rest_time, cycles) -> None:
@@ -31,33 +32,43 @@ def pomodoro_timer(work_time, rest_time, cycles) -> None:
             have the value of 1 or bigger!"""
         )
 
-    iter = 0
-    while True:
-        if iter == 0:
-            print("-" * 50)
-            print("\033[1;32mStarting working time! 💻\033[m")
+    for _ in range(cycles):
+        print("-" * 65)
+        print(
+            f"Work Time: {work_time} seconds 💻 | Rest Time: {rest_time} seconds 💤| Cycle: {_ + 1} 🔁"
+        )
+        print("-" * 65)
+        print("Currently working... 💻")
+        print(f"Time remaining: {countdown_timer(work_time)}")
+        os.system("clear")
+        print("-" * 65)
+        print("Time to rest! 💤")
+        print(f"Time remaining: {countdown_timer(rest_time)}")
+        os.system("clear")
 
-        sleep(work_time)
-        print("\033[1;35mWorking time over! Time to rest! 💤\033[m")
-        print("-" * 50)
-
-        if iter + 1 == cycles:
-            print("\033[1;36mSessions over. Good Job! 👍\033[m")
-            break
-
-        sleep(rest_time)
-        print("\033[1;31mResting time over! Time to work! 💻\033[m")
-
-        iter += 1
+    print("\033[1;32mCongratulations! You have completed your job! 🎉\033[0m")
 
 
-def main():
-    print("-" * 50)
+def countdown_timer(seconds):
+    while seconds:
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        print(f"{hours:02}:{minutes:02}:{seconds:02}", end="\r")
+        sleep(1)
+        seconds -= 1
+
+
+def spawn_pomodoro():
+    print("-" * 65)
     work_time = int(input("Working time in seconds: "))
     rest_time = int(input("Resting time in seconds: "))
     cycles = int(input("How many cycles should we do?: "))
 
     pomodoro_timer(work_time, rest_time, cycles)
+
+
+def main():
+    spawn_pomodoro()
 
 
 if __name__ == "__main__":
